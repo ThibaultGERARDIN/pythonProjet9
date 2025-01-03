@@ -1,6 +1,10 @@
+{% load static %}
 
 <html>
-    <head><title>Litrevu</title></head>
+    <head>
+        <title>Litrevu</title>
+        <link rel="stylesheet" href="{% static 'authentication/styles.css' %}" />
+    </head>
     <body>
 
         {% block content %}{% endblock %}

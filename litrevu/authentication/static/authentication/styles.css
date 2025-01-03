@@ -1,3 +1,20 @@
-h1 {
-    color: red
+.landing-container {
+    display: flex;
+}
+
+.register-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+}
+
+.register-button {
+    display: block;
+    width: 100px;
+    height: auto;
+    border: 1px black;
 }

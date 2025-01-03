@@ -3,13 +3,22 @@
 {% block content %}
 
 <h1>Landing page</h1>
-<p>Login and log on</p>
+<div class="landing-container">
+  <div class="register-container">
+    <h3>Inscrivez-vous maintenant</h3>
+    <a class="register-button" href="{% url 'register' %}">S'inscrire</a>
+  </div>
+  <div class="login">
+    <h3>Connectez-vous</h3>
+    <form action="" method="post" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Envoyer">
+    </form>
+  
+  </div>
+</div>
 
 
-<form action="" method="post" novalidate>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Envoyer">
-  </form>
 
 {% endblock %}
