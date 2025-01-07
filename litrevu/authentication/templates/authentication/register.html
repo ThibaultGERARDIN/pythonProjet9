@@ -2,12 +2,15 @@
 
 {% block content %}
 
-<h2>Inscrivez-vous</h2>
-<div class="register-container">
-    <form action="" method="post" novalidate>
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Envoyer">
+<div class="register">
+    <h2>Inscription</h2>
+    <form action="" method="post">
+        <div class="form-inputs">
+            {% csrf_token %}
+            {{ form }}
+        </div>
+
+        <input type="submit" value="Envoyer" class="button">
     </form>
 </div>
 

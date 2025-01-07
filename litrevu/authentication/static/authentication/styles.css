@@ -1,20 +1,146 @@
+:root {
+    --main-font: "Roboto";
+    --title-font: "Bebas Neue";
+    --color-1: #b55936;
+    --color-2: #5aa4a9;
+    --color-text-dark : #080337; 
+}
+
+*:focus {
+    outline: none;
+}
+
+body {
+    max-width: 1440px;
+    margin: auto;
+}
+
+
+header {
+    position: relative;
+    max-width: 100%;
+    height:120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--color-1);
+}
+
+.logo {
+    height:100px;
+    align-self: center;
+}
+
+h1 {
+    font-family: var(--title-font);
+    font-weight: 700;
+    color: var(--color-1);
+    font-size: 48px;
+    text-align: center;
+}
+
+h2 {
+    font-family: var(--title-font);
+    font-weight: 500;
+    color: var(--color-text-dark);
+    font-size: 36px;
+}
+
 .landing-container {
     display: flex;
+    justify-content: space-around;
 }
 
 .register-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    border-right: solid 2px var(--color-2);
 }
 
 .login {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    align-items: center;
+
 }
 
-.register-button {
+.button {
+    padding: 5px;
+    text-decoration: None;
+    color: white;
+    font-weight: 500;
+    font-size: 24px;
+    font-family: var(--title-font);
+    width: 120px;
+    height: 40px;
+    border: none;
+    background-color: var(--color-1);
+    text-align: center;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.form-inputs {
+    max-width: 360px;
+    width: 100%;
+}
+
+input[type=text], input[type=password] {
+    width: 100%;
+    height: 40px;
+    padding: 6px 10px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border-radius: 0px;
+    border: 1px solid var(--color-text-dark);
+    box-sizing: border-box;
+
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    border: none;
+    border: 3px solid var(--color-2);
+}
+
+label {
     display: block;
-    width: 100px;
-    height: auto;
-    border: 1px black;
+    font-family: var(--main-font);
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.register {
+    margin: auto;
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    position: absolute;
+    right: 20px;
+
+}
+.nav-link {
+    text-decoration: none;
+    font-family: var(--title-font);
+    color: white;
+    font-size: 16px;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
 }

@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
-from authentication.forms import CustomUserCreationForm
-from django.contrib.auth.forms import AuthenticationForm
+from authentication.forms import CustomUserCreationForm, CustomAuthenticationForm
+
+# from django.contrib.auth.forms import AuthenticationForm
 
 
 def landing(request):
-    form = AuthenticationForm()
+    form = CustomAuthenticationForm()
     return render(request, "authentication/landing.html", {"form": form})
 
 
@@ -18,5 +19,4 @@ def register(request):
             form.save()
             return redirect("landing")
 
-    form = CustomUserCreationForm()
     return render(request, "authentication/register.html", {"form": form})
