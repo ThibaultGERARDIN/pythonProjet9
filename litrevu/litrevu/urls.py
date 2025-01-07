@@ -17,10 +17,14 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from authentication import views
+from authentication import views as authentication_views
+from reviews import views as reviews_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("landing/", views.landing, name="landing"),
-    path("register/", views.register, name="register"),
+    path("landing/", authentication_views.landing, name="landing"),
+    path("register/", authentication_views.register, name="register"),
+    path("flux/", reviews_views.flux, name="flux"),
+    path("posts/", reviews_views.posts, name="posts"),
+    path("subscriptions/", reviews_views.subscriptions, name="subscriptions"),
 ]

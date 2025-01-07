@@ -20,3 +20,4 @@ def register(request):
             return redirect("landing")
 
     return render(request, "authentication/register.html", {"form": form})
+

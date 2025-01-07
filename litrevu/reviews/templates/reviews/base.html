@@ -1,0 +1,26 @@
+{% load static %}
+
+<html>
+    <head>
+        <title>LITrevu</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'authentication/styles.css' %}" />
+    </head>
+    <body>
+        <div class="main-container">
+            <header>
+                <img src="{% static 'authentication/logoblanc.png' %}" alt="Logo LITrevu" class="logo">
+                <nav>
+                    <a class="nav-link" href="{% url 'landing' %}">Accueil</a>
+                </nav>
+            </header>
+            <main>        
+                {% block content %}
+                {% endblock %}
+            </main>
+            <footer></footer>
+        </div>
+    </body>
+</html>
