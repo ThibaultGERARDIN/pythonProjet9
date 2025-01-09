@@ -46,7 +46,7 @@ h2 {
     font-size: 36px;
 }
 
-.landing-container {
+.home-container {
     display: flex;
     justify-content: space-around;
 }

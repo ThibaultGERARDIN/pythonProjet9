@@ -7,7 +7,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Ticket(models.Model):
 
-    title = models.CharField(max_length=128)
+    title = models.CharField(max_length=128, verbose_name="Titre")
     description = models.TextField(max_length=2048, blank=True)
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     image = models.ImageField(upload_to="")
@@ -17,10 +17,12 @@ class Ticket(models.Model):
 class Review(models.Model):
 
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
-    rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(0), MaxValueValidator(5)])
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(5)], verbose_name="Note"
+    )
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    headline = models.CharField(max_length=128)
-    body = models.TextField(max_length=8192, blank=True)
+    headline = models.CharField(max_length=128, verbose_name="Titre")
+    body = models.TextField(max_length=8192, blank=True, verbose_name="Commentaire")
     time_created = models.DateTimeField(auto_now_add=True)
 
 

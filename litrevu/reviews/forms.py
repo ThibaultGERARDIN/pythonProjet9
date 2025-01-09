@@ -3,15 +3,25 @@ from reviews.models import Review, Ticket, UserFollows
 
 
 class CreateTicketForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
     class Meta:
         model = Ticket
-        fields = "__all__"
+        fields = ["title", "description", "image"]
 
 
 class CreateReviewForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+
     class Meta:
         model = Review
-        fields = "__all__"
+        fields = ["headline", "rating", "body"]
 
 
 class FollowUserForm(forms.ModelForm):

@@ -2,9 +2,10 @@
 
 {% block content %}
 
-<h1>Flux</h1>
+<h1>Bienvenue {{ user.username }} !</h1>
 <div class="flux-container">
-
+    <a class="button" href="{% url 'ticket-add' %}">Demander une critique</a>
+    <a class="button" href="{% url 'review-add' %}">Créer une critique</a>
 </div>
 
 {% endblock %}

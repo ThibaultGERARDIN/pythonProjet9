@@ -22,9 +22,12 @@ from reviews import views as reviews_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("landing/", authentication_views.landing, name="landing"),
+    path("", authentication_views.home, name="home"),
     path("register/", authentication_views.register, name="register"),
+    path("logout/", authentication_views.logout_view, name="logout"),
     path("flux/", reviews_views.flux, name="flux"),
     path("posts/", reviews_views.posts, name="posts"),
+    path("posts/ticket_add", reviews_views.ticket_create, name="ticket-add"),
+    path("posts/review_add", reviews_views.review_create, name="review-add"),
     path("subscriptions/", reviews_views.subscriptions, name="subscriptions"),
 ]

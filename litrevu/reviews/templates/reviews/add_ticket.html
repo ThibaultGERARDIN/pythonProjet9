@@ -1,0 +1,16 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+
+<div class="ticket-container">
+    <h2>Nouveau ticket</h2>
+    <form action="" method="post">
+        <div class="form-inputs">
+            {% csrf_token %}
+            {{ form }}
+        </div>
+
+        <input type="submit" value="Envoyer" class="button">
+    </form>
+</div>
+{% endblock %}
