@@ -24,7 +24,11 @@ class CreateReviewForm(forms.ModelForm):
         fields = ["headline", "rating", "body"]
 
 
-class FollowUserForm(forms.ModelForm):
-    class Meta:
-        model = UserFollows
-        fields = "__all__"
+class FollowUserForm(forms.Form):
+
+    user_to_follow = forms.CharField(max_length=128)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""
+        self.fields["user_to_follow"].label = "Nom de l'utilisateur à suivre"

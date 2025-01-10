@@ -13,7 +13,7 @@ def home(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect("flux")
+            return redirect("feed")
         else:
             return print("Erreur dans l'identifiant ou le mdp")
     return render(request, "authentication/home.html", {"form": form})

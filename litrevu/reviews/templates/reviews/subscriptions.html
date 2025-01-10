@@ -4,6 +4,25 @@
 
 <h1>Vos abonnements</h1>
 <div class="subscriptions-container">
+    <form action="" method="post">
+        <div class="form-inputs">
+            {% csrf_token %}
+            {{ form }}
+        </div>
+        <input type="submit" value="Envoyer" class="button">
+    </form>
+    <div class="follows">
+        <h3>Abonnements</h3>
+        {% for followed_user in following %}
+            <span>{{ followed_user.followed_user }}</span>
+        {% endfor %}
+    </div>
+    <div class="follows">
+        <h3>Abonnés</h3>
+        {% for following_user in followed_by %}
+            <span>{{ following_user.user }}</span>
+        {% endfor %}
+    </div>
 
 </div>
 

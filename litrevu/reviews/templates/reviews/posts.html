@@ -2,9 +2,16 @@
 
 {% block content %}
 
-<h1>Posts</h1>
+<h1>Vos posts</h1>
 <div class="posts-container">
-
+    {% for ticket in tickets %}
+    <div class="ticket">
+        <h3>{{ ticket.title }}</h3>
+        <p class="ticket-description">{{ ticket.description }}</p>
+        <img class="ticket-img" src="{{ ticket.image.url }}" alt="Image de {{ ticket.title }}">
+    </div>
+    
+    {% endfor %}
 </div>
 
 {% endblock %}

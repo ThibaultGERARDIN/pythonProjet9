@@ -19,15 +19,19 @@ from django.contrib import admin
 from django.urls import path
 from authentication import views as authentication_views
 from reviews import views as reviews_views
+from django.conf.urls.static import static
+from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", authentication_views.home, name="home"),
     path("register/", authentication_views.register, name="register"),
     path("logout/", authentication_views.logout_view, name="logout"),
-    path("flux/", reviews_views.flux, name="flux"),
+    path("feed/", reviews_views.feed, name="feed"),
     path("posts/", reviews_views.posts, name="posts"),
     path("posts/ticket_add", reviews_views.ticket_create, name="ticket-add"),
     path("posts/review_add", reviews_views.review_create, name="review-add"),
     path("subscriptions/", reviews_views.subscriptions, name="subscriptions"),
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
