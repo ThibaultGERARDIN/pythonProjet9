@@ -9,8 +9,11 @@
             {% csrf_token %}
             {{ form }}
         </div>
-
-        <input type="submit" value="Envoyer" class="button">
+        <div class="register-nav">
+            <a class="button" href="{% url 'home' %}">Retour</a>
+            <input type="submit" value="Envoyer" class="button">
+        </div>
+        
     </form>
 </div>
 

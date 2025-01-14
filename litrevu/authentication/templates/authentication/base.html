@@ -1,6 +1,6 @@
 {% load static %}
 
-<html>
+<html lang="fr">
     <head>
         <title>LITrevu</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,9 +12,6 @@
         <div class="main-container">
             <header>
                 <img src="{% static 'authentication/logoblanc.png' %}" alt="Logo LITrevu" class="logo">
-                <nav>
-                    <a class="nav-link" href="{% url 'home' %}">Accueil</a>
-                </nav>
             </header>
             <main>        
                 {% block content %}

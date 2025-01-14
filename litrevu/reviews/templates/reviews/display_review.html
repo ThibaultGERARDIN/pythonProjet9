@@ -1,0 +1,20 @@
+<div class="review-display">
+    <div class="review-header">
+        <span>{% if post.user == user %}Vous avez publié une critique {% else %}{{ post.user }} a publié une critique {% endif %}</span>
+        <span>{{ post.time_created|date:"H:i, d F Y" }}</span>
+    </div>
+    <div class="review-title">
+    <h4>{{ post.headline }}</h4>
+    <span>
+        -
+        <i class="fa fa-star{%if post.rating <= 1 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{%if post.rating <= 2 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{%if post.rating <= 3 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{%if post.rating <= 4 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{%if post.rating <= 8 %}-o {% endif %}" aria-hidden="true"></i>
+    </span>
+    </div>
+    <p class="review-description"> {{ post.body }}</p>
+    {% include 'reviews/display_ticket.html' with post=post.ticket %}
+
+</div>

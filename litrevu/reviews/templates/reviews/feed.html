@@ -4,8 +4,20 @@
 
 <h1>Bienvenue {{ user.username }} !</h1>
 <div class="feed-container">
-    <a class="button" href="{% url 'ticket-add' %}">Demander une critique</a>
-    <a class="button" href="{% url 'review-add' %}">Créer une critique</a>
+    <div class="feed-buttons">
+        <a class="button" href="{% url 'ticket-add' %}">Demander une critique</a>
+        <a class="button" href="{% url 'review-add' %}">Créer une critique</a>
+    </div>
+    
+    <div class="posts-container">
+        {% for post in posts %}
+            {% if post.content_type == 'TICKET' %}
+                {% include 'reviews/display_ticket.html' %}
+            {% elif post.content_type == 'REVIEW' %}
+                {% include 'reviews/display_review.html' %}   
+            {% endif %}
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

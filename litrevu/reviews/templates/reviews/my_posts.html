@@ -1,0 +1,16 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+
+<h1>Vos posts</h1>
+<div class="posts-container">
+    {% for post in posts %}
+        {% if post.content_type == 'TICKET' %}
+            {% include 'reviews/display_ticket.html' %}
+        {% elif post.content_type == 'REVIEW' %}
+            {% include 'reviews/display_review.html' %}   
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}

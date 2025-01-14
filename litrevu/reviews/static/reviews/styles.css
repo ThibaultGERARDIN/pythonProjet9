@@ -13,6 +13,7 @@
 body {
     max-width: 1440px;
     margin: auto;
+    font-family: var(--main-font);
 }
 
 
@@ -46,6 +47,20 @@ h2 {
     font-size: 36px;
 }
 
+h3 {
+    font-family: var(--title-font);
+    font-weight: 500;
+    color: var(--color-2);
+    font-size: 32px;
+}
+
+h4 {
+    font-family: var(--title-font);
+    font-weight: 400;
+    color: var(--color-2);
+    font-size: 26px;
+    margin: 0;
+}
 
 .button {
     padding: 5px;
@@ -54,7 +69,7 @@ h2 {
     font-weight: 500;
     font-size: 24px;
     font-family: var(--title-font);
-    width: 120px;
+    width: 260px;
     height: 40px;
     border: none;
     background-color: var(--color-1);
@@ -84,7 +99,6 @@ input[type=text] {
     height: 40px;
     padding: 6px 10px;
     margin: 8px 0;
-    box-sizing: border-box;
     border-radius: 0px;
     border: 1px solid var(--color-text-dark);
     box-sizing: border-box;
@@ -95,7 +109,6 @@ textarea {
     height: auto;
     padding: 6px 10px;
     margin: 8px 0;
-    box-sizing: border-box;
     border-radius: 0px;
     border: 1px solid var(--color-text-dark);
     box-sizing: border-box;
@@ -131,3 +144,61 @@ nav {
     text-decoration: underline;
 }
 
+.feed-buttons {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+}
+.feed-container {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%;
+    gap: 20px;
+}
+
+.posts-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 20px;
+}
+
+.ticket-img {
+    height: 250px;
+    object-fit: contain;
+}
+
+.review-header, .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.review-display, .ticket-display {
+    border: 1px solid var(--color-text-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
+    box-sizing: border-box;
+}
+
+.fa-star {
+    color: var(--color-1);
+}
+
+.fa-star-o {
+    color: var(--color-text-dark);
+}
+
+.review-title {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}

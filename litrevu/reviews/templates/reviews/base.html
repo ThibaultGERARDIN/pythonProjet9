@@ -1,11 +1,12 @@
 {% load static %}
 
-<html>
+<html lang="fr">
     <head>
         <title>LITrevu</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="{% static 'reviews/styles.css' %}" />
     </head>
     <body>
@@ -14,7 +15,7 @@
                 <img src="{% static 'authentication/logoblanc.png' %}" alt="Logo LITrevu" class="logo">
                 <nav>
                     <a class="nav-link" href="{% url 'feed' %}">Flux</a>
-                    <a class="nav-link" href="{% url 'posts' %}">Posts</a>
+                    <a class="nav-link" href="{% url 'my_posts' %}">Posts</a>
                     <a class="nav-link" href="{% url 'subscriptions' %}">Abonnements</a>
                     <a class="nav-link" href="{% url 'logout' %}">Se déconnecter</a>
                 </nav>
