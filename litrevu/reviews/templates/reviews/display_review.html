@@ -15,6 +15,12 @@
     </span>
     </div>
     <p class="review-description"> {{ post.body }}</p>
-    {% include 'reviews/display_ticket.html' with post=post.ticket %}
+    {% include 'reviews/display_ticket.html' with post=post.ticket origin="review" %}
+    {% if post.user == user %}
+    <span class="post-buttons">
+        <a href="" class="button-small">Modifier</a>
+        <a href="" class="button-small">Supprimer</a>
+    </span>       
+    {% endif %}
 
 </div>

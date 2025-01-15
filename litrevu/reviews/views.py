@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from itertools import chain
 from django.db.models import CharField, Value
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -51,6 +52,7 @@ def get_users_viewable_tickets(user, page):
         print("Pas de page selectionnée, veuillez réessayer")
 
 
+@login_required
 def feed(request):
     user = request.user
     reviews = get_users_viewable_reviews(user, "feed_page")
@@ -64,6 +66,7 @@ def feed(request):
     return render(request, "reviews/feed.html", {"user": user, "posts": posts})
 
 
+@login_required
 def my_posts(request):
     user = request.user
     reviews = get_users_viewable_reviews(user, "posts_page")
@@ -77,6 +80,7 @@ def my_posts(request):
     return render(request, "reviews/my_posts.html", {"user": user, "posts": posts})
 
 
+@login_required
 def subscriptions(request):
     current_user = request.user
     users_list = User.objects.all()
@@ -92,7 +96,7 @@ def subscriptions(request):
                 UserFollows.objects.create(
                     user=current_user, followed_user=User.objects.get(username=followed_username)
                 )
-                return redirect("feed")
+                return redirect("subscriptions")
         else:
             print(f"${followed_username} not in the list")
     else:
@@ -107,6 +111,7 @@ def subscriptions(request):
     )
 
 
+@login_required
 def ticket_create(request):
 
     if request.method == "POST":
@@ -121,6 +126,7 @@ def ticket_create(request):
     return render(request, "reviews/add_ticket.html", {"form": form})
 
 
+@login_required
 def review_create(request):
 
     if request.method == "POST":
@@ -143,3 +149,15 @@ def review_create(request):
         review_form = CreateReviewForm()
 
     return render(request, "reviews/add_review.html", {"ticket_form": ticket_form, "review_form": review_form})
+
+
+@login_required
+def unfollow(request, id):
+    user_to_unfollow = UserFollows.objects.get(id=id)
+    if request.method == "POST":
+        # supprimer le groupe de la base de données
+        user_to_unfollow.delete()
+        # rediriger vers la liste des groupes
+        return redirect("subscriptions")
+
+    return render(request, "reviews/unfollow.html", {"user_to_unfollow": user_to_unfollow})

@@ -1,9 +1,22 @@
 <div class="ticket-display">
     <div class="ticket-header">
-        <span>{% if post.user == user %}Vous avez publié un ticket {% else %}{{ post.user }} a demandé une critique {% endif %}</span>
+        <span>{% if origin == "review" %} Ticket - {{ post.user }} {% elif post.user == user %}Vous avez publié un ticket {% else %}{{ post.user }} a demandé une critique {% endif %}</span>
         <span>{{ post.time_created|date:"H:i, d F Y" }}</span>
     </div>
     <h4>{{ post.title }}</h4>
     <p class="ticket-description"> {{ post.description }}</p>
     <img class="ticket-img" src="{{ post.image.url }}" alt="Image de {{ post.title }}">
+    {% if origin == "review" %}
+
+    {% elif post.user == user %}
+    <span class="post-buttons">
+        <a href="" class="button-small">Modifier</a>
+        <a href="" class="button-small">Supprimer</a>
+    </span>       
+    {% else %}
+    <span class="post-buttons">
+        <a href="" class="button-small">Créer une critique</a>
+    </span>
+    {% endif %}
+
 </div>

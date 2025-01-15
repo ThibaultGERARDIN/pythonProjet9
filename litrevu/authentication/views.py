@@ -37,3 +37,19 @@ def logout_view(request):
     if user is not None:
         logout(request)
         return redirect("home")
+
+
+def login_view(request):
+    if request.method != "POST":
+        form = CustomAuthenticationForm()
+    else:
+        form = CustomAuthenticationForm(request.POST)
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect("feed")
+        else:
+            return print("Erreur dans l'identifiant ou le mdp")
+    return render(request, "authentication/login.html", {"form": form})

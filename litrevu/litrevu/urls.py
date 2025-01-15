@@ -27,11 +27,13 @@ urlpatterns = [
     path("", authentication_views.home, name="home"),
     path("register/", authentication_views.register, name="register"),
     path("logout/", authentication_views.logout_view, name="logout"),
+    path("login/", authentication_views.login_view, name="login"),
     path("feed/", reviews_views.feed, name="feed"),
     path("my_posts/", reviews_views.my_posts, name="my_posts"),
-    path("my_posts/ticket_add", reviews_views.ticket_create, name="ticket-add"),
-    path("my_posts/review_add", reviews_views.review_create, name="review-add"),
+    path("my_posts/ticket_add/", reviews_views.ticket_create, name="ticket-add"),
+    path("my_posts/review_add/", reviews_views.review_create, name="review-add"),
     path("subscriptions/", reviews_views.subscriptions, name="subscriptions"),
+    path("subscriptions/<int:id>/unfollow/", reviews_views.unfollow, name="unfollow"),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

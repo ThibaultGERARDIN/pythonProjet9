@@ -1,0 +1,16 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+
+<div class="unfollow">
+    <h2>Etes-vous sûr de vouloir vous désabonner de {{ user_to_unfollow.followed_user }} ?</h2>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Se désabonner" class="button">
+    </form>
+    <a href="{%url 'subscriptions' %}" class="button">Retour</a>
+
+</div>
+
+{% endblock %}

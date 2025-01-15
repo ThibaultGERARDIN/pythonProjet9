@@ -18,6 +18,7 @@ class CreateReviewForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
+        self.fields["rating"] = forms.RadioSelect()
 
     class Meta:
         model = Review

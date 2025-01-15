@@ -4,6 +4,7 @@
 
 <h1>Vos abonnements</h1>
 <div class="subscriptions-container">
+    <h3>Suivre d'autres utilisateurs</h3>
     <form action="" method="post">
         <div class="form-inputs">
             {% csrf_token %}
@@ -11,16 +12,16 @@
         </div>
         <input type="submit" value="Envoyer" class="button">
     </form>
-    <div class="follows">
+    <div class="follows-container">
         <h3>Abonnements</h3>
         {% for followed_user in following %}
-            <span>{{ followed_user.followed_user }}</span>
+            <span class="user-follows">{{ followed_user.followed_user }} <a href="{% url 'unfollow' followed_user.id %}" class="button">Se désabonner</a></span>
         {% endfor %}
     </div>
-    <div class="follows">
+    <div class="follows-container">
         <h3>Abonnés</h3>
         {% for following_user in followed_by %}
-            <span>{{ following_user.user }}</span>
+            <span class="user-follows">{{ following_user.user }}</span>
         {% endfor %}
     </div>
 
