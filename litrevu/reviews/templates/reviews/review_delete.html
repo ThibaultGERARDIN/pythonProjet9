@@ -1,0 +1,16 @@
+{% extends 'reviews/base.html' %}
+
+{% block content %}
+
+<div class="unfollow">
+    <h2>Etes-vous sûr de vouloir supprimer {{ review.headline }} ?</h2>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Supprimer" class="button">
+    </form>
+    <a href="{%url 'feed' %}" class="button">Retour</a>
+
+</div>
+
+{% endblock %}

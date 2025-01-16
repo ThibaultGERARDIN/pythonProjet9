@@ -140,6 +140,7 @@ def review_create(request):
             review = review_form.save(commit=False)
             review.ticket = Ticket.objects.get(id=ticket_id)
             review.user = request.user
+            review.rating = review_form["note"].value()
             review.save()
 
             return redirect("my_posts")
@@ -152,6 +153,51 @@ def review_create(request):
 
 
 @login_required
+def review_ticket(request, id):
+    ticket = Ticket.objects.get(id=id)
+
+    if request.method == "POST":
+        review_form = CreateReviewForm(request.POST)
+
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.ticket = ticket
+            review.user = request.user
+            review.rating = review_form["note"].value()
+            review.save()
+
+            return redirect("my_posts")
+
+    else:
+        review_form = CreateReviewForm()
+
+    return render(request, "reviews/add_review.html", {"ticket": ticket, "review_form": review_form})
+
+
+@login_required
+def review_update(request, id):
+    review = Review.objects.get(id=id)
+    ticket = review.ticket
+
+    if request.method == "POST":
+        review_form = CreateReviewForm(request.POST, instance=review, initial={"note": str(review.rating)})
+
+        if review_form.is_valid():
+            review = review_form.save(commit=False)
+            review.ticket = ticket
+            review.user = request.user
+            review.rating = review_form["note"].value()
+            review.save()
+
+            return redirect("my_posts")
+
+    else:
+        review_form = CreateReviewForm(instance=review)
+
+    return render(request, "reviews/add_review.html", {"ticket": ticket, "review_form": review_form})
+
+
+@login_required
 def unfollow(request, id):
     user_to_unfollow = UserFollows.objects.get(id=id)
     if request.method == "POST":
@@ -161,3 +207,27 @@ def unfollow(request, id):
         return redirect("subscriptions")
 
     return render(request, "reviews/unfollow.html", {"user_to_unfollow": user_to_unfollow})
+
+
+@login_required
+def review_delete(request, id):
+    review = Review.objects.get(id=id)
+    if request.method == "POST":
+        # supprimer le groupe de la base de données
+        review.delete()
+        # rediriger vers la liste des groupes
+        return redirect("feed")
+
+    return render(request, "reviews/review_delete.html", {"review": review})
+
+
+@login_required
+def ticket_delete(request, id):
+    ticket = Ticket.objects.get(id=id)
+    if request.method == "POST":
+        # supprimer le groupe de la base de données
+        ticket.delete()
+        # rediriger vers la liste des groupes
+        return redirect("feed")
+
+    return render(request, "reviews/review_delete.html", {"ticket": ticket})

@@ -14,15 +14,18 @@ class CreateTicketForm(forms.ModelForm):
 
 
 class CreateReviewForm(forms.ModelForm):
+    CHOICES = {"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5}
+    note = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
-        self.fields["rating"] = forms.RadioSelect()
 
     class Meta:
         model = Review
-        fields = ["headline", "rating", "body"]
+        fields = ["headline", "body"]
+
+    field_order = ["headline", "note", "body"]
 
 
 class FollowUserForm(forms.Form):
@@ -33,3 +36,4 @@ class FollowUserForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.label_suffix = ""
         self.fields["user_to_follow"].label = "Nom de l'utilisateur à suivre"
+        self.fields["user_to_follow"].widget.attrs["placeholder"] = self.fields["user_to_follow"].label

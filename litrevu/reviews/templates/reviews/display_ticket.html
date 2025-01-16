@@ -10,12 +10,12 @@
 
     {% elif post.user == user %}
     <span class="post-buttons">
-        <a href="" class="button-small">Modifier</a>
-        <a href="" class="button-small">Supprimer</a>
+        <a href="{% url 'ticket-update' post.id %}" class="button-small">Modifier</a>
+        <a href="{% url 'ticket-delete' post.id %}" class="button-small">Supprimer</a>
     </span>       
     {% else %}
     <span class="post-buttons">
-        <a href="" class="button-small">Créer une critique</a>
+        <a href="{% url 'review-ticket' post.id %}" class="button-small">Créer une critique</a>
     </span>
     {% endif %}
 

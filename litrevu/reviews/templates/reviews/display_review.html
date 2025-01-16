@@ -7,19 +7,19 @@
     <h4>{{ post.headline }}</h4>
     <span>
         -
-        <i class="fa fa-star{%if post.rating <= 1 %}-o {% endif %}" aria-hidden="true"></i>
-        <i class="fa fa-star{%if post.rating <= 2 %}-o {% endif %}" aria-hidden="true"></i>
-        <i class="fa fa-star{%if post.rating <= 3 %}-o {% endif %}" aria-hidden="true"></i>
-        <i class="fa fa-star{%if post.rating <= 4 %}-o {% endif %}" aria-hidden="true"></i>
-        <i class="fa fa-star{%if post.rating <= 8 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{%if post.rating < 1 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{%if post.rating < 2 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{%if post.rating < 3 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{%if post.rating < 4 %}-o {% endif %}" aria-hidden="true"></i>
+        <i class="fa fa-star{%if post.rating < 5 %}-o {% endif %}" aria-hidden="true"></i>
     </span>
     </div>
     <p class="review-description"> {{ post.body }}</p>
     {% include 'reviews/display_ticket.html' with post=post.ticket origin="review" %}
     {% if post.user == user %}
     <span class="post-buttons">
-        <a href="" class="button-small">Modifier</a>
-        <a href="" class="button-small">Supprimer</a>
+        <a href="{% url 'review-update' post.id %}" class="button-small">Modifier</a>
+        <a href="{% url 'review-delete' post.id %}" class="button-small">Supprimer</a>
     </span>       
     {% endif %}
 
