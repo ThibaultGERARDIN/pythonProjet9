@@ -3,8 +3,10 @@
         <span>{% if origin == "review" %} Ticket - {{ post.user }} {% elif post.user == user %}Vous avez publié un ticket {% else %}{{ post.user }} a demandé une critique {% endif %}</span>
         <span>{{ post.time_created|date:"H:i, d F Y" }}</span>
     </div>
-    <h4>{{ post.title }}</h4>
-    <p class="ticket-description"> {{ post.description }}</p>
+    <h3>{{ post.title }}</h3>
+    {% if origin != "review" %}
+        <p class="ticket-description"> {{ post.description }}</p>
+    {% endif %}
     <img class="ticket-img" src="{{ post.image.url }}" alt="Image de {{ post.title }}">
     {% if origin == "review" %}
 

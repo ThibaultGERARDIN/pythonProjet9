@@ -3,7 +3,11 @@
 {% block content %}
 
 <div class="ticket-container">
-    <h2>Nouveau ticket</h2>
+    {% if origin == "update" %}
+        <h2>Modifier le ticket</h2>
+    {% else %}
+        <h2>Nouveau ticket</h2>
+    {% endif %}
     <form enctype="multipart/form-data" action="" method="post">
         <div class="form-inputs">
             {% csrf_token %}
@@ -14,14 +18,35 @@
                         {{ field }}
                     {% else %}
                         <span class="fake-label">Image</span>
-                        <label class="button-small" for="{{ field.auto_id }}">Télécharger fichier</label>
-                        {{ field }}
+                            <label class="button-small" for="{{ field.auto_id }}">Télécharger fichier</label>
+                            {{ field }}
                     {% endif %}
                 {% endfor %}
+                {% if form.image %}
+                    <div class="image-preview">
+                        <img src="{{ form.image.url }}" />
+                    </div>
+                {% else %}
+                    <span>Choisissez une image</span>
+                {% endif %}
             </div>
+            
         </div>
-
-        <input type="submit" value="Envoyer" class="button">
+        {% if origin == "update" %}
+            <input type="submit" value="Valider les modifications" class="button">
+        {% else %}
+            <input type="submit" value="Envoyer" class="button">
+        {% endif %}
     </form>
+    {% if origin == "update" %}
+    <span class="update-options">
+        <a href="{%url 'ticket-delete' ticket.id %}" class="button-small">Supprimer le ticket</a>
+        <a href="{%url 'feed' %}" class="button-small">Retour</a>
+    </span>
+    {% else %}
+    <span class="update-options">
+        <a href="{%url 'feed' %}" class="button-small">Retour</a>
+    </span>
+    {% endif %}
 </div>
 {% endblock %}

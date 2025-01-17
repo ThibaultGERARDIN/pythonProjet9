@@ -127,6 +127,21 @@ def ticket_create(request):
 
 
 @login_required
+def ticket_update(request, id):
+    ticket = Ticket.objects.get(id=id)
+    if request.method == "POST" and ticket.user == request.user:
+        form = CreateTicketForm(request.POST, request.FILES, instance=ticket)
+        if form.is_valid():
+            ticket = form.save(commit=False)
+            ticket.save()
+            return redirect("my_posts")
+    else:
+        form = CreateTicketForm(instance=ticket)
+
+    return render(request, "reviews/add_ticket.html", {"form": form, "origin": "update", "ticket": ticket})
+
+
+@login_required
 def review_create(request):
 
     if request.method == "POST":
@@ -179,8 +194,8 @@ def review_update(request, id):
     review = Review.objects.get(id=id)
     ticket = review.ticket
 
-    if request.method == "POST":
-        review_form = CreateReviewForm(request.POST, instance=review, initial={"note": str(review.rating)})
+    if request.method == "POST" and review.user == request.user:
+        review_form = CreateReviewForm(request.POST, instance=review)
 
         if review_form.is_valid():
             review = review_form.save(commit=False)
@@ -190,20 +205,27 @@ def review_update(request, id):
             review.save()
 
             return redirect("my_posts")
+    elif review.user != request.user:
+        print("Vous n'avez pas le droit de faire ça !")
+        return redirect("feed")
 
     else:
         review_form = CreateReviewForm(instance=review)
 
-    return render(request, "reviews/add_review.html", {"ticket": ticket, "review_form": review_form})
+    return render(
+        request,
+        "reviews/add_review.html",
+        {"ticket": ticket, "review": review, "review_form": review_form, "origin": "update"},
+    )
 
 
 @login_required
 def unfollow(request, id):
     user_to_unfollow = UserFollows.objects.get(id=id)
     if request.method == "POST":
-        # supprimer le groupe de la base de données
+
         user_to_unfollow.delete()
-        # rediriger vers la liste des groupes
+
         return redirect("subscriptions")
 
     return render(request, "reviews/unfollow.html", {"user_to_unfollow": user_to_unfollow})
@@ -212,10 +234,13 @@ def unfollow(request, id):
 @login_required
 def review_delete(request, id):
     review = Review.objects.get(id=id)
-    if request.method == "POST":
-        # supprimer le groupe de la base de données
+    if request.method == "POST" and review.user == request.user:
+
         review.delete()
-        # rediriger vers la liste des groupes
+
+        return redirect("feed")
+    elif review.user != request.user:
+        print("Vous n'avez pas le droit de faire ça !")
         return redirect("feed")
 
     return render(request, "reviews/review_delete.html", {"review": review})
@@ -224,10 +249,11 @@ def review_delete(request, id):
 @login_required
 def ticket_delete(request, id):
     ticket = Ticket.objects.get(id=id)
-    if request.method == "POST":
-        # supprimer le groupe de la base de données
+    if request.method == "POST" and ticket.user == request.user:
         ticket.delete()
-        # rediriger vers la liste des groupes
+        return redirect("feed")
+    elif ticket.user != request.user:
+        print("Vous n'avez pas le droit de faire ça !")
         return redirect("feed")
 
     return render(request, "reviews/review_delete.html", {"ticket": ticket})

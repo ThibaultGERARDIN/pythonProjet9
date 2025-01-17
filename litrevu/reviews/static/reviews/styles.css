@@ -2,7 +2,7 @@
     --main-font: "Roboto";
     --title-font: "Bebas Neue";
     --color-1: #b55936;
-    --color-2: #5aa4a9;
+    --color-2: #227177;
     --color-text-dark : #080337; 
 }
 
@@ -14,6 +14,7 @@ body {
     max-width: 1440px;
     margin: auto;
     font-family: var(--main-font);
+    font-size: 18px;
 }
 
 
@@ -45,23 +46,27 @@ h2 {
     font-weight: 500;
     color: var(--color-text-dark);
     font-size: 36px;
+    margin-bottom: 0;
 }
 
 h3 {
     font-family: var(--title-font);
     font-weight: 500;
     color: var(--color-2);
-    font-size: 32px;
-    margin: 0;
-}
-
-h4 {
-    font-family: var(--title-font);
-    font-weight: 400;
-    color: var(--color-2);
     font-size: 26px;
     margin: 0;
 }
+
+
+.category {
+    font-family: var(--main-font);
+    font-weight: 500;
+    color: var(--color-text-dark);
+    font-size: 22px;
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
 
 .button {
     padding: 5px;
@@ -123,6 +128,8 @@ form {
 }
 
 input[type=text] {
+    font-family: var(--main-font);
+    font-size: 16px;
     width: 100%;
     height: 40px;
     padding: 6px 10px;
@@ -132,12 +139,19 @@ input[type=text] {
     box-sizing: border-box;
 }
 
-input[type=file] {
-    display: none;
+
+::file-selector-button {
+  display: none;
 }
 
+input[type=file] {
+    font-family: var(--main-font);
+    font-size: 16px;
+}
 
 textarea {
+    font-family: var(--main-font);
+    font-size: 16px;
     width: 100%;
     height: auto;
     padding: 6px 10px;
@@ -164,7 +178,9 @@ label {
     font-family: var(--main-font);
     font-size: 18px;
     font-weight: 400;
+    margin-bottom: 10px;
 }
+
 
 .subscriptions-container label {
     position:absolute;
@@ -258,7 +274,7 @@ nav {
     align-items: center;
     gap: 10px;
 }
-.subscriptions-container {
+.subscriptions-container, .ticket-container, .review-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -296,3 +312,67 @@ nav {
     flex-direction: column;
     align-items: center;
 }
+
+.update-options {
+    width: 80%;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.ticket-snippet, .review-form {
+    width: 80%;
+    border: 1px solid var(--color-text-dark);
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.review-form .form-inputs {
+    width: 100%;
+}
+.review-form .update-options {
+    width: 100%;
+}
+
+.review-form input[type="submit"] {
+    align-self: center;
+}
+
+.submit-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+fieldset {
+    position: relative;
+    width: 100%;
+    height: 40px;
+    padding: 6px 10px;
+    margin-top: 20px;
+    margin-left: -0.5px;
+    margin-bottom: 0px;
+    border-radius: 0px;
+    border: 1px solid var(--color-text-dark);
+    box-sizing: border-box;
+}
+
+legend {
+    position: absolute;
+    top: -30px;
+    left: -2.5px;
+}
+
+div .review-note {
+    display: flex;
+    justify-content: space-around;
+}
+
+.review-note label {
+    width: 50px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+

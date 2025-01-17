@@ -14,7 +14,6 @@ class Ticket(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        # Set the author to the current user before saving
         if not self.pk:  # Check if it's a new instance
             self.user = kwargs.pop("user", None)
         super().save(*args, **kwargs)

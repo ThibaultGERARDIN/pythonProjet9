@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "authentication",
     "reviews",
+    "django_cleanup.apps.CleanupConfig",
 ]
 
 MIDDLEWARE = [

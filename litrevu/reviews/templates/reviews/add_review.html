@@ -4,27 +4,78 @@
 
 
 <div class="review-container">
-    <h2>Créer une critique</h2>
+    {% if origin == "update" %}
+        <h2>Modifier la critique</h2>
+    {% else %}
+        <h2>Créer une critique</h2>
+    {% endif %}
     {% if ticket %}
         <div class="ticket-snippet">
-            <h5>Vous êtes en train de poster en réponse à :</h5>
+            <span class="category">Vous êtes en train de poster en réponse à :</span>
             {% include 'reviews/display_ticket.html' with post=ticket origin="review" %}
         </div>
-        <form enctype="multipart/form-data" action="" method="post">
+        <div class="review-form">
+            <span class="category">Critique</span>
+            <form enctype="multipart/form-data" action="" method="post">
+                <div class="form-inputs">
+                    {% csrf_token %}
+                    {{ review_form }}
+                </div>
+                {% if origin == "update" %}
+                    <input type="submit" value="Valider les modifications" class="button">
+                {% else %}
+                    <input type="submit" value="Envoyer" class="button">
+                {% endif %}
+            </form>
+            {% if origin == "update" %}
+                <span class="update-options">
+                    <a href="{%url 'review-delete' review.id %}" class="button-small">Supprimer la critique</a>
+                    <a href="{%url 'feed' %}" class="button-small">Retour</a>
+                </span>
+            {% else %}
+                <span class="update-options">
+                    <a href="{%url 'feed' %}" class="button-small">Retour</a>
+                </span>
+            {% endif %}
+        </div>
+        
+    {% elif ticket_form %}
+    
+    <form enctype="multipart/form-data" action="" method="post">
+        <div class="ticket-snippet">
+            <span class="category">Livre / Article</span>
             <div class="form-inputs">
                 {% csrf_token %}
-                {{ review_form }}
+                <div>
+                    {% for field in ticket_form %}
+                        {% if field == ticket_form.title or field == ticket_form.description %}
+                            <label for="{{ field.auto_id }}">{{ field.label }}</label>
+                            {{ field }}
+                        {% else %}
+                            <span class="fake-label">Image</span>
+                            <label class="button-small" for="{{ field.auto_id }}">Télécharger fichier</label>
+                            {{ field }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
             </div>
-            <input type="submit" value="Envoyer" class="button">
-        </form>
-    {% elif ticket_form %}
-    <form enctype="multipart/form-data" action="" method="post">
-        <div class="form-inputs">
-            {% csrf_token %}
-            {{ ticket_form }}
-            {{ review_form }}
         </div>
-        <input type="submit" value="Envoyer" class="button">
+        <div class="review-form">
+
+            <div class="form-inputs">
+                <span class="category">Critique</span>
+                {{ review_form }}
+
+            </div>
+
+            <div class="submit-button">
+                <input type="submit" value="Envoyer" class="button">
+            </div>
+
+            <span class="update-options">
+                <a href="{%url 'feed' %}" class="button-small">Retour</a>
+            </span>
+        </div>
     </form>
     {% endif %}
     
