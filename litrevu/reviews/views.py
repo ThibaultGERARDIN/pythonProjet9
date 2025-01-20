@@ -6,20 +6,27 @@ from django.core.exceptions import ObjectDoesNotExist
 from itertools import chain
 from django.db.models import CharField, Value
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.db import IntegrityError
 
 # Create your views here.
 
 
 def get_users_viewable_reviews(user, page):
     user_follows = UserFollows.objects.all().filter(user=user)
+    tickets = Ticket.objects.all().filter(user=user)
     if page == "feed_page":
         try:
             reviews = Review.objects.all().filter(user=user)
             for user_follow in user_follows:
                 followed_reviews = Review.objects.all().filter(user=user_follow.followed_user)
                 reviews |= followed_reviews
+            for ticket in tickets:
+                ticket_reviews = Review.objects.all().filter(ticket=ticket)
+                if ticket_reviews not in reviews:
+                    reviews |= ticket_reviews
         except ObjectDoesNotExist:
-            print("no reviews")
+            print("Pas de critiques")
         return reviews
     elif page == "posts_page":
         try:
@@ -40,13 +47,13 @@ def get_users_viewable_tickets(user, page):
                 followed_tickets = Ticket.objects.all().filter(user=user_follow.followed_user)
                 tickets |= followed_tickets
         except ObjectDoesNotExist:
-            print("no reviews")
+            print("Pas de tickets")
         return tickets
     elif page == "posts_page":
         try:
             tickets = Ticket.objects.all().filter(user=user)
         except ObjectDoesNotExist:
-            print("no reviews")
+            print("Pas de tickets")
         return tickets
     else:
         print("Pas de page selectionnée, veuillez réessayer")
@@ -55,15 +62,21 @@ def get_users_viewable_tickets(user, page):
 @login_required
 def feed(request):
     user = request.user
+    blocked_reviews = []
     reviews = get_users_viewable_reviews(user, "feed_page")
     reviews = reviews.annotate(content_type=Value("REVIEW", CharField()))
 
     tickets = get_users_viewable_tickets(user, "feed_page")
     tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
 
-    posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
+    for review in reviews:
+        if review.ticket in tickets and review.user == user:
+            blocked_reviews.append(review.ticket)
+            print(review.ticket.title)
 
-    return render(request, "reviews/feed.html", {"user": user, "posts": posts})
+    posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
+    print(blocked_reviews)
+    return render(request, "reviews/feed.html", {"user": user, "posts": posts, "blocked_reviews": blocked_reviews})
 
 
 @login_required
@@ -93,12 +106,19 @@ def subscriptions(request):
         followed_username = form["user_to_follow"].value()
         if followed_username in usernames_list:
             if form.is_valid():
-                UserFollows.objects.create(
-                    user=current_user, followed_user=User.objects.get(username=followed_username)
-                )
-                return redirect("subscriptions")
+                try:
+                    UserFollows.objects.create(
+                        user=current_user, followed_user=User.objects.get(username=followed_username)
+                    )
+                    messages.success(request, f'Vous êtes maintenant abonné à "{followed_username}" !')
+                    return redirect("subscriptions")
+
+                except IntegrityError:
+                    messages.error(request, "Vous suivez déjà cet utilisateur.")
+                    return redirect("subscriptions")
         else:
-            print(f"${followed_username} not in the list")
+            messages.error(request, "Erreur : nom d'utilisateur inconnu.")
+
     else:
         form = FollowUserForm()
 
@@ -119,6 +139,7 @@ def ticket_create(request):
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.save(user=request.user)
+            messages.success(request, f'Merci pour votre ticket sur "{ticket.title}" !')
             return redirect("my_posts")
     else:
         form = CreateTicketForm()
@@ -134,6 +155,7 @@ def ticket_update(request, id):
         if form.is_valid():
             ticket = form.save(commit=False)
             ticket.save()
+            messages.success(request, f'Le ticket "{ticket.title}" a bien été mis à jour.')
             return redirect("my_posts")
     else:
         form = CreateTicketForm(instance=ticket)
@@ -157,7 +179,7 @@ def review_create(request):
             review.user = request.user
             review.rating = review_form["note"].value()
             review.save()
-
+            messages.success(request, f'Merci pour votre critique de "{ticket.title}" !')
             return redirect("my_posts")
 
     else:
@@ -175,14 +197,17 @@ def review_ticket(request, id):
         review_form = CreateReviewForm(request.POST)
 
         if review_form.is_valid():
-            review = review_form.save(commit=False)
-            review.ticket = ticket
-            review.user = request.user
-            review.rating = review_form["note"].value()
-            review.save()
-
-            return redirect("my_posts")
-
+            try:
+                review = review_form.save(commit=False)
+                review.ticket = ticket
+                review.user = request.user
+                review.rating = review_form["note"].value()
+                review.save()
+                messages.success(request, f'Merci pour votre critique de "{ticket.title}" !')
+                return redirect("my_posts")
+            except IntegrityError:
+                messages.error(request, "Erreur : vous avez déjà publié une critique pour ce ticket.")
+                return redirect("feed")
     else:
         review_form = CreateReviewForm()
 
@@ -203,10 +228,11 @@ def review_update(request, id):
             review.user = request.user
             review.rating = review_form["note"].value()
             review.save()
-
+            messages.success(request, f'Votre critique de "{ticket.title}" a bien été mise à jour.')
             return redirect("my_posts")
+
     elif review.user != request.user:
-        print("Vous n'avez pas le droit de faire ça !")
+        messages.error(request, "Erreur : vous n'avez pas le droit de faire ça !")
         return redirect("feed")
 
     else:
@@ -237,10 +263,11 @@ def review_delete(request, id):
     if request.method == "POST" and review.user == request.user:
 
         review.delete()
+        messages.success(request, f'Votre critique de "{review.ticket.title}" a bien été supprimée.')
 
         return redirect("feed")
     elif review.user != request.user:
-        print("Vous n'avez pas le droit de faire ça !")
+        messages.error(request, "Erreur : vous n'avez pas le droit de faire ça !")
         return redirect("feed")
 
     return render(request, "reviews/review_delete.html", {"review": review})
@@ -251,9 +278,10 @@ def ticket_delete(request, id):
     ticket = Ticket.objects.get(id=id)
     if request.method == "POST" and ticket.user == request.user:
         ticket.delete()
+        messages.success(request, f'Votre ticket "{ticket.title}" a bien été supprimé.')
         return redirect("feed")
     elif ticket.user != request.user:
-        print("Vous n'avez pas le droit de faire ça !")
+        messages.error(request, "Erreur : vous n'avez pas le droit de faire ça !")
         return redirect("feed")
 
     return render(request, "reviews/review_delete.html", {"ticket": ticket})

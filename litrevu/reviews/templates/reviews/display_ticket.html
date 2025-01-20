@@ -1,6 +1,6 @@
 <div class="ticket-display">
     <div class="ticket-header">
-        <span>{% if origin == "review" %} Ticket - {{ post.user }} {% elif post.user == user %}Vous avez publié un ticket {% else %}{{ post.user }} a demandé une critique {% endif %}</span>
+        <span>{% if origin == "review" %} Ticket - {% if post.user == user %}Vous {% else %}{{ post.user }} {% endif %} {% elif post.user == user %}Vous avez publié un ticket {% else %}{{ post.user }} a demandé une critique {% endif %}</span>
         <span>{{ post.time_created|date:"H:i, d F Y" }}</span>
     </div>
     <h3>{{ post.title }}</h3>
@@ -10,11 +10,21 @@
     <img class="ticket-img" src="{{ post.image.url }}" alt="Image de {{ post.title }}">
     {% if origin == "review" %}
 
+    {% elif post not in blocked_reviews and post.user == user %}
+    <span class="post-buttons">
+        <a href="{% url 'review-ticket' post.id %}" class="button-small">Créer une critique</a>
+        <a href="{% url 'ticket-update' post.id %}" class="button-small">Modifier</a>
+        <a href="{% url 'ticket-delete' post.id %}" class="button-small">Supprimer</a>
+    </span>
     {% elif post.user == user %}
+    <span class="post-info">Vous avez déjà répondu à ce ticket !</span>
     <span class="post-buttons">
         <a href="{% url 'ticket-update' post.id %}" class="button-small">Modifier</a>
         <a href="{% url 'ticket-delete' post.id %}" class="button-small">Supprimer</a>
-    </span>       
+    </span>  
+   
+    {% elif post in blocked_reviews %}
+    <span class="post-info">Vous avez déjà répondu à ce ticket !</span>
     {% else %}
     <span class="post-buttons">
         <a href="{% url 'review-ticket' post.id %}" class="button-small">Créer une critique</a>

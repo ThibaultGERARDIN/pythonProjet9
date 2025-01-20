@@ -13,7 +13,17 @@
             <header>
                 <img src="{% static 'authentication/logoblanc.png' %}" alt="Logo LITrevu" class="logo">
             </header>
-            <main>        
+            <main>
+                {% block default_messages %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                            <a class="alert-close" href="{{ request.get_full_path }}">&times;</a>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endblock default_messages %}        
                 {% block content %}
                 {% endblock %}
             </main>

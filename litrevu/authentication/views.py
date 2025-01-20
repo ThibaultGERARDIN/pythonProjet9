@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from authentication.forms import CustomUserCreationForm, CustomAuthenticationForm
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
 
 def home(request):
@@ -13,9 +14,12 @@ def home(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            messages.success(request, f"Vous êtes bien connecté en tant que \"{user.username}\"")
             return redirect("feed")
         else:
-            return print("Erreur dans l'identifiant ou le mdp")
+            messages.error(request, "Nom d'utilisateur ou mot de passe incorrect")
+            return redirect("home")
+        
     return render(request, "authentication/home.html", {"form": form})
 
 

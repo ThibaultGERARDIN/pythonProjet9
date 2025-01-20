@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.contrib import messages
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Create your models here.
@@ -29,6 +30,9 @@ class Review(models.Model):
     headline = models.CharField(max_length=128, verbose_name="Titre")
     body = models.TextField(max_length=8192, blank=True, verbose_name="Commentaire")
     time_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "ticket")
 
 
 class UserFollows(models.Model):
