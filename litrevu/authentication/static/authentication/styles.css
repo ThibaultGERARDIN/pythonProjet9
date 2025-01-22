@@ -173,4 +173,36 @@ label {
     width: 50%;
     display: flex;
     justify-content: space-around;
+    gap: 10px;
+}
+
+@media (max-width: 1024px) {
+
+    h2 {
+        margin: 10px;
+        text-align: center;
+    }
+
+    .form-inputs {
+        width: 80%;
+    }
+}
+
+
+@media (max-width: 500px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    body {
+        font-size: 14px;
+    }
+
+    .button {
+        font-size: 18px;
+    }
 }

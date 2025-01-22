@@ -251,6 +251,7 @@ nav {
     width: 90%;
     display: flex;
     justify-content: space-between;
+    gap: 10px;
 }
 .feed-container {
     margin: auto;
@@ -412,4 +413,73 @@ div .review-note {
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+
+@media (max-width: 1024px) {
+
+    h2 {
+        margin: 10px;
+        text-align: center;
+    }
+
+    .form-inputs {
+        width: 80%;
+    }
+
+    header {
+        justify-content: flex-start;
+        padding-left: 20px;
+    }
+
+    .button {
+        max-width: 200px;
+        width: 80%;
+        height: auto;
+        text-wrap: wrap;
+    }
+
+    .button-small {
+        max-width: 100px;
+        height: auto;
+        text-wrap: wrap;
+    }
+
+    .post-buttons {
+        flex-wrap: wrap;
+    }
+
+    .review-title {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+}
+
+
+@media (max-width: 500px) {
+    h1 {
+        font-size: 30px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    body {
+        font-size: 14px;
+    }
+
+    .button {
+        font-size: 18px;
+    }
+
+    input[type=text]::placeholder {
+        font-size: 14px;
+    }
+   
 }
