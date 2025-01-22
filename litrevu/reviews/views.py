@@ -299,7 +299,7 @@ def unfollow(request, id):
     if request.method == "POST":
 
         user_to_unfollow.delete()
-
+        messages.success(request, f'Vous êtes désabonné de "{user_to_unfollow.followed_user}".')
         return redirect("subscriptions")
 
     return render(request, "reviews/unfollow.html", {"user_to_unfollow": user_to_unfollow})
