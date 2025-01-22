@@ -5,6 +5,11 @@ from django.contrib import messages
 
 
 def home(request):
+    """
+    View for the home page of the app.
+
+    Has login form and register button.
+    """
     if request.method != "POST":
         form = CustomAuthenticationForm()
     else:
@@ -14,17 +19,21 @@ def home(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            messages.success(request, f"Vous êtes bien connecté en tant que \"{user.username}\"")
+            messages.success(request, f'Vous êtes bien connecté en tant que "{user.username}"')
             return redirect("feed")
         else:
             messages.error(request, "Nom d'utilisateur ou mot de passe incorrect")
             return redirect("home")
-        
+
     return render(request, "authentication/home.html", {"form": form})
 
 
 def register(request):
+    """
+    View for the registration page.
 
+    Has registration form to create new user.
+    """
     if request.method != "POST":
         form = CustomUserCreationForm()
     else:
@@ -37,6 +46,9 @@ def register(request):
 
 
 def logout_view(request):
+    """
+    Logout function.
+    """
     user = request.user
     if user is not None:
         logout(request)
@@ -44,6 +56,9 @@ def logout_view(request):
 
 
 def login_view(request):
+    """
+    Login view, displayed if user is not authenticated but tries to reach a loginrequired page.
+    """
     if request.method != "POST":
         form = CustomAuthenticationForm()
     else:

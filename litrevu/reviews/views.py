@@ -13,6 +13,10 @@ from django.db import IntegrityError
 
 
 def get_users_viewable_reviews(user, page):
+    """
+    Function to get all reviews the current user can see.
+    Includes his own, followed users, and reviews of his tickets by non followed users.
+    """
     user_follows = UserFollows.objects.all().filter(user=user)
     tickets = Ticket.objects.all().filter(user=user)
     if page == "feed_page":
@@ -39,6 +43,10 @@ def get_users_viewable_reviews(user, page):
 
 
 def get_users_viewable_tickets(user, page):
+    """
+    Function to get all tickets the current user can see.
+    Includes his own and followed users.
+    """
     user_follows = UserFollows.objects.all().filter(user=user)
     if page == "feed_page":
         try:
@@ -61,6 +69,10 @@ def get_users_viewable_tickets(user, page):
 
 @login_required
 def feed(request):
+    """
+    Feed view, shows all user's viewable posts.
+    Buttons to add ticket and review.
+    """
     user = request.user
     blocked_reviews = []
     reviews = get_users_viewable_reviews(user, "feed_page")
@@ -75,26 +87,38 @@ def feed(request):
             print(review.ticket.title)
 
     posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
-    print(blocked_reviews)
     return render(request, "reviews/feed.html", {"user": user, "posts": posts, "blocked_reviews": blocked_reviews})
 
 
 @login_required
 def my_posts(request):
+    """
+    Posts view, show all user's posts.
+    """
     user = request.user
+    blocked_reviews = []
     reviews = get_users_viewable_reviews(user, "posts_page")
     reviews = reviews.annotate(content_type=Value("REVIEW", CharField()))
 
     tickets = get_users_viewable_tickets(user, "posts_page")
     tickets = tickets.annotate(content_type=Value("TICKET", CharField()))
 
+    for review in reviews:
+        if review.ticket in tickets and review.user == user:
+            blocked_reviews.append(review.ticket)
+            print(review.ticket.title)
+
     posts = sorted(chain(reviews, tickets), key=lambda post: post.time_created, reverse=True)
 
-    return render(request, "reviews/my_posts.html", {"user": user, "posts": posts})
+    return render(request, "reviews/my_posts.html", {"user": user, "posts": posts, "blocked_reviews": blocked_reviews})
 
 
 @login_required
 def subscriptions(request):
+    """
+    Subscriptions view.
+    User can follow / unfollow and see users following.
+    """
     current_user = request.user
     users_list = User.objects.all()
     usernames_list = []
@@ -133,7 +157,9 @@ def subscriptions(request):
 
 @login_required
 def ticket_create(request):
-
+    """
+    Ticket creation view.
+    """
     if request.method == "POST":
         form = CreateTicketForm(request.POST, request.FILES)
         if form.is_valid():
@@ -149,6 +175,10 @@ def ticket_create(request):
 
 @login_required
 def ticket_update(request, id):
+    """
+    Ticket update view.
+    Same as ticket create with form pre-filled with instance of ticket.
+    """
     ticket = Ticket.objects.get(id=id)
     if request.method == "POST" and ticket.user == request.user:
         form = CreateTicketForm(request.POST, request.FILES, instance=ticket)
@@ -165,6 +195,11 @@ def ticket_update(request, id):
 
 @login_required
 def review_create(request):
+    """
+    Review creation view.
+
+    From scratch including ticket creation.
+    """
 
     if request.method == "POST":
         ticket_form = CreateTicketForm(request.POST, request.FILES)
@@ -191,6 +226,11 @@ def review_create(request):
 
 @login_required
 def review_ticket(request, id):
+    """
+    Review creation view.
+
+    From existing ticket.
+    """
     ticket = Ticket.objects.get(id=id)
 
     if request.method == "POST":
@@ -216,6 +256,11 @@ def review_ticket(request, id):
 
 @login_required
 def review_update(request, id):
+    """
+    Ticket update view.
+    Same as review create with form pre-filled with instance of review.
+    Can't update the relevent ticket from there.
+    """
     review = Review.objects.get(id=id)
     ticket = review.ticket
 
@@ -247,6 +292,9 @@ def review_update(request, id):
 
 @login_required
 def unfollow(request, id):
+    """
+    Function to unfollow user.
+    """
     user_to_unfollow = UserFollows.objects.get(id=id)
     if request.method == "POST":
 
@@ -259,6 +307,10 @@ def unfollow(request, id):
 
 @login_required
 def review_delete(request, id):
+    """
+    Function to delete a review.
+    User needs to be the one who created it.
+    """
     review = Review.objects.get(id=id)
     if request.method == "POST" and review.user == request.user:
 
@@ -275,6 +327,10 @@ def review_delete(request, id):
 
 @login_required
 def ticket_delete(request, id):
+    """
+    Function to delete a ticket.
+    User needs to be the one who created it.
+    """
     ticket = Ticket.objects.get(id=id)
     if request.method == "POST" and ticket.user == request.user:
         ticket.delete()
