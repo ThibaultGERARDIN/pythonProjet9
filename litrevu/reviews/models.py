@@ -1,9 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from django.contrib import messages
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-# Create your models here.
 
 
 class Ticket(models.Model):
@@ -15,7 +13,7 @@ class Ticket(models.Model):
     time_created = models.DateTimeField(auto_now_add=True)
 
     def save(self, *args, **kwargs):
-        if not self.pk:  # Check if it's a new instance
+        if not self.pk:
             self.user = kwargs.pop("user", None)
         super().save(*args, **kwargs)
 

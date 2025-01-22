@@ -1,5 +1,5 @@
 {% extends 'authentication/base.html' %}
-
+{% block title %}Login{% endblock %}
 {% block content %}
 
 <h1>Vous devez être connecté pour accéder à cette page</h1>
@@ -11,7 +11,7 @@
         {% csrf_token %}
         {{ form }}
     </div>
-      <input type="submit" value="Envoyer" class="button">
+      <input type="submit" value="Se connecter" class="button">
       <h2>Pas encore inscrit ? C'est par ici ! </h2>
     <a class="button" href="{% url 'register' %}">S'inscrire</a>
   </div>
